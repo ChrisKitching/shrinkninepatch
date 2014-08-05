@@ -25,87 +25,9 @@ public class Main {
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
             if (args[i].endsWith(".9.png")) {
-//                shrinkNinePatch(args[i]);
-            }
-
-            considerQuantising(args[i]);
-        }
-    }
-
-    private static void considerQuantising(String image) {
-        int[][] pixels = loadPixels(image);
-
-        HashMap<Integer, Integer> colourMap = countColours(pixels);
-        if (colourMap == null) {
-            // Not thought to be usefully quantisable.
-            return;
-        }
-
-        int width = pixels.length;
-        int height = pixels[0].length;
-
-//        int[] flatPixels = collapseAndFlattenBuffer(pixels, width, height);
-
-        // Get the list of colours from the keyset...
-        Object[] colours = colourMap.keySet().toArray();
-        byte[] colourMappings = new byte[colours.length * 4];
-
-        System.out.println(image + ": " + colours.length);
-//
-//        System.out.println("Got colours: " + Arrays.toString(colours));
-//
-//        int counter = 0;
-//        for (int i = 0; i < colours.length; i++) {
-//            int colour = (Integer) colours[i];
-//
-//            byte a = (byte) (colour & 0xFF000000);
-//            byte r = (byte) (colour & 0x00FF0000);
-//            byte g = (byte) (colour & 0x0000FF00);
-//            byte b = (byte) (colour & 0x000000FF);
-//
-//            colourMappings[counter] = r;
-//            colourMappings[counter + 1] = g;
-//            colourMappings[counter + 2] = b;
-//            colourMappings[counter + 3] = a;
-//
-//            counter += 4;
-//        }
-//
-//        // Log base 2 of the quantity of colours here...
-//        int bitsNeeded = (int) Math.ceil(31 - Integer.numberOfLeadingZeros(colours.length));
-//        System.out.println("For "+ colours.length + " colours we need " + bitsNeeded + " bits.");
-//
-//        IndexColorModel model = new IndexColorModel(bitsNeeded, colours.length, colourMappings, 0, true);
-//
-//        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, model);
-//        img.setRGB(0, 0, width, height, flatPixels, 0, width);
-//
-//        File outputfile = new File(image);
-//        try {
-//            ImageIO.write(img, "png", outputfile);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    private static HashMap<Integer, Integer> countColours(int[][] pixels) {
-        HashMap<Integer, Integer> colourMap = new HashMap<Integer, Integer>();
-
-        for (int i = 0; i < pixels.length; i++) {
-            for (int b = 0; b < pixels[i].length; b++) {
-                if (!colourMap.containsKey(pixels[i][b])) {
-                    colourMap.put(pixels[i][b], 1);
-                } else {
-                    colourMap.put(pixels[i][b], colourMap.get(pixels[i][b]) + 1);
-                }
-            }
-
-            if (colourMap.keySet().size() > 256) {
-                return null;
+                shrinkNinePatch(args[i]);
             }
         }
-
-        return colourMap;
     }
 
     public static void shrinkNinePatch(String image) {
@@ -127,11 +49,12 @@ public class Main {
     }
 
     private static int[][] loadPixels(String image) {
-        Image img = null;
+        Image img;
         try {
             img = ImageIO.read(new File(image));
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
 
         int w = img.getWidth(null);
