@@ -5,12 +5,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.awt.image.IndexColorModel;
 import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class Main {
     public static final int ARGB_BLACK = 0xFF000000;
